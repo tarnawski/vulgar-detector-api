@@ -1,6 +1,6 @@
 VULGAR DETECTOR
 ===============
-Tool to detect vulgar language based on artificial intelligence
+Tool to detect vulgar language in text
 
 ###Getting started
 
