@@ -1,0 +1,9 @@
+status:
+    path:     /status
+    defaults: { _controller: ApiBundle:VulgarDetector:status, _format: json }
+    methods: [GET]
+
+check:
+    path:     /check
+    defaults: { _controller: ApiBundle:VulgarDetector:check, _format: json }
+    methods: [POST]
