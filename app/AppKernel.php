@@ -18,10 +18,10 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
             new Hautelook\AliceBundle\HautelookAliceBundle(),
             new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new \Lsw\MemcacheBundle\LswMemcacheBundle(),
 
             new VulgarDetectorBundle\VulgarDetectorBundle(),
             new ApiBundle\ApiBundle(),

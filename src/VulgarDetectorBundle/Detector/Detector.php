@@ -2,12 +2,12 @@
 
 namespace VulgarDetectorBundle\Detector;
 
-interface DetectorStrategy
+interface Detector
 {
     /**
-     * @param string $text
+     * @param array $words
      * @param string $language
      * @return bool
      */
-    public function check($text, $language);
+    public function isVulgar($words, $language);
 }

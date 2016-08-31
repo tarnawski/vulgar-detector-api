@@ -5,25 +5,47 @@ services:
     arguments:
       - VulgarDetectorBundle\Entity\Word
 
-  vulgar_detector.service.statistic_service:
-    class: VulgarDetectorBundle\Service\StatisticService
+  vulgar_detector.request.repository:
+    class: Doctrine\ORM\EntityRepository
+    factory: ['@doctrine.orm.entity_manager', getRepository]
+    arguments:
+      - VulgarDetectorBundle\Entity\Request
+
+  vulgar_detector.detector.similar_detector:
+    class: VulgarDetectorBundle\Detector\SimilarDetector
+    arguments:
+      - '@vulgar_detector.word.repository'
+      - '@memcache.default'
+      - '%memcache_ttl%'
+      - '%default_threshold%'
+
+  vulgar_detector.word_tokenizer:
+    class: VulgarDetectorBundle\Tokenizer\WordTokenizer
+
+  vulgar_detector.lowercase_normalizer:
+    class: VulgarDetectorBundle\Normalizer\LowercaseNormalizer
+
+  vulgar_detector.stop_words_normalizer:
+    class: VulgarDetectorBundle\Normalizer\StopWordsNormalizer
+
+  vulgar_detector.unique_normalizer:
+    class: VulgarDetectorBundle\Normalizer\UniqueNormalizer
+
+  vulgar_detector.normalizer_factory:
+    class: VulgarDetectorBundle\Normalizer\NormalizerFactory
+    arguments:
+      - '@vulgar_detector.lowercase_normalizer'
+      - '@vulgar_detector.stop_words_normalizer'
+      - '@vulgar_detector.unique_normalizer'
+
+  vulgar_detector.validator.language:
+    class: ApiBundle\Validator\Constraints\LanguageValidator
+    arguments:
+          entityManager: "@vulgar_detector.word.repository"
+    tags:
+      - { name: validator.constraint_validator, alias: language_validate }
+
+  vulgar_detector.service.request_service:
+    class: VulgarDetectorBundle\Service\RequestService
     arguments:
       - '@doctrine.orm.entity_manager'
-
-  vulgar_detector.detector.static_strategy:
-    class: VulgarDetectorBundle\Detector\Strategy\StaticStrategy
-    arguments:
-      - '@vulgar_detector.word.repository'
-      - '@vulgar_detector.service.statistic_service'
-
-  vulgar_detector.detector.strategy_factory:
-    class: VulgarDetectorBundle\Detector\StrategyFactory
-    arguments:
-      - '@vulgar_detector.detector.static_strategy'
-
-  vulgar_detector.corrector.vulgar_corrector:
-    class: VulgarDetectorBundle\Corrector\VulgarCorrector
-    arguments:
-      - '@vulgar_detector.word.repository'
-
-

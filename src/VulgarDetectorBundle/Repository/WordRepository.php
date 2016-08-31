@@ -9,26 +9,35 @@ use Doctrine\ORM\EntityRepository;
  */
 class WordRepository extends EntityRepository
 {
-    public function getByLanguage($language)
+    public function getWordsByLanguage($language = null)
     {
-        $results = $this->createQueryBuilder('w')
-            ->select('w')
-            ->where('w.language = :language')
-            ->setParameter('language', $language)
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('w');
+        $qb->select('w');
+        if ($language) {
+            $qb->andWhere('w.language = :language');
+            $qb->setParameter('language', $language);
+        }
 
-        return $results;
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getWordsCount()
+    {
+        $result = $this->createQueryBuilder('w')
+            ->select('COUNT(w)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $result;
     }
 
     public function getLanguagesCount()
     {
-        $results = $this->createQueryBuilder('w')
-            ->select('count(w.language)')
-            ->distinct()
+        $result = $this->createQueryBuilder('w')
+            ->select('COUNT(DISTINCT w.language)')
             ->getQuery()
             ->getSingleScalarResult();
 
-        return $results;
+        return $result;
     }
 }
