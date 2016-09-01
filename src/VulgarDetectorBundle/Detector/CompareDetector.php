@@ -4,7 +4,7 @@ namespace VulgarDetectorBundle\Detector;
 
 use VulgarDetectorBundle\Repository\WordRepository;
 
-class StaticDetector implements Detector
+class CompareDetector implements Detector
 {
     /** @var WordRepository */
     private $wordRepository;
