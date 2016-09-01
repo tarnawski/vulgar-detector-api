@@ -23,6 +23,18 @@ class WordRepository extends EntityRepository
         return (int)$qb->getQuery()->getSingleScalarResult();
     }
 
+    public function getCountWords($language = null)
+    {
+        $qb = $this->createQueryBuilder('w');
+        $qb->select('w');
+        if ($language) {
+            $qb->andWhere('w.language = :language');
+            $qb->setParameter('language', $language);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getWordsCount()
     {
         $result = $this->createQueryBuilder('w')

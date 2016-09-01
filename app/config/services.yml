@@ -10,6 +10,18 @@ services:
     arguments:
       - '@vulgar_detector.word.repository'
 
+  vulgar_detector.detector.similar_detector:
+    class: VulgarDetectorBundle\Detector\SimilarDetector
+    arguments:
+      - '@vulgar_detector.word.repository'
+      - '%default_threshold%'
+
+  vulgar_detector.detector.factory_detector:
+    class: VulgarDetectorBundle\Detector\FactoryDetector
+    arguments:
+      - '@vulgar_detector.detector.static_detector'
+      - '@vulgar_detector.detector.similar_detector'
+
   vulgar_detector.word_tokenizer:
     class: VulgarDetectorBundle\Tokenizer\WordTokenizer
 
