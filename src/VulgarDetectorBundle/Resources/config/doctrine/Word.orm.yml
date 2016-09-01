@@ -16,7 +16,6 @@ VulgarDetectorBundle\Entity\Word:
             column: name
             type: string
             nullable: false
-            unique: true
             length: 255
         language:
             column: language

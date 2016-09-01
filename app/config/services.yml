@@ -16,3 +16,9 @@ services:
   vulgar_detector.lowercase_normalizer:
     class: VulgarDetectorBundle\Normalizer\LowercaseNormalizer
 
+  vulgar_detector.validator.language:
+    class: ApiBundle\Validator\Constraints\LanguageValidator
+    arguments:
+          entityManager: "@vulgar_detector.word.repository"
+    tags:
+      - { name: validator.constraint_validator, alias: language_validate }

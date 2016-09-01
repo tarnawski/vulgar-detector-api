@@ -4,13 +4,7 @@ ApiBundle\Model\Query:
             - NotBlank: ~
             - Length:
                 max:   255
-        output:
-            - Choice:
-                choices:  [simple, complex]
-        threshold:
-            - Range:
-                min: 0
-                max: 1
         language:
             - Length:
                 max:   36
+            - ApiBundle\Validator\Constraints\Language: ~

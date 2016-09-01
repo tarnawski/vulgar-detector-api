@@ -37,7 +37,6 @@ class WordRepository extends EntityRepository
     {
         $result = $this->createQueryBuilder('w')
             ->select('COUNT(DISTINCT w.language)')
-            ->distinct('w')
             ->getQuery()
             ->getSingleScalarResult();
 

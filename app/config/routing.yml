@@ -4,6 +4,6 @@ status:
     methods: [GET]
 
 check:
-    path:     /check
+    path:     /
     defaults: { _controller: ApiBundle:VulgarDetector:check, _format: json }
     methods: [POST]
