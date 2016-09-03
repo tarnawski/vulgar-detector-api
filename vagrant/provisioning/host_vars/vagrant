@@ -11,3 +11,5 @@ composer_download_url: https://getcomposer.org/composer.phar
 
 mysql_port: 3306
 mysql_pass: root
+
+es_version: "1.7.4"

@@ -1,0 +1,28 @@
+---
+- name: Install add-apt-repostory
+  apt: name=software-properties-common state=latest
+
+- name: Add Oracle Java Repository
+  apt_repository: repo='ppa:webupd8team/java'
+
+- name: Accept Java 8 Licence
+  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | tee /etc/oracle-java-8-licence-acceptance | /usr/bin/debconf-set-selections
+  args:
+    creates: /etc/oracle-java-8-licence-acceptance
+
+- name: Install Oracle Java 8
+  apt: name={{item}} state=latest
+  with_items:
+    - oracle-java8-installer
+    - ca-certificates
+    - oracle-java8-set-default
+
+- name: Download ElasticSearch
+  get_url: url=https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-{{es_version}}.deb dest=/tmp/elasticsearch-{{es_version}}.deb
+
+- name: Install Elasticsearch
+  apt: deb=/tmp/elasticsearch-{{es_version}}.deb
+  notify: restart elasticsearch
+
+- name: Enable on bootup
+  shell: update-rc.d elasticsearch defaults 95 10
