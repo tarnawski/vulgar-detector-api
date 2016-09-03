@@ -9,21 +9,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class WordRepository extends EntityRepository
 {
-    public function getCountWordsByArray($array, $language = null)
-    {
-        $qb = $this->createQueryBuilder('w');
-        $qb->select('COUNT(w)');
-        $qb->where('w.name IN (:array)');
-        $qb->setParameter('array', $array);
-        if ($language) {
-            $qb->andWhere('w.language = :language');
-            $qb->setParameter('language', $language);
-        }
-
-        return (int)$qb->getQuery()->getSingleScalarResult();
-    }
-
-    public function getCountWords($language = null)
+    public function getWordsByLanguage($language = null)
     {
         $qb = $this->createQueryBuilder('w');
         $qb->select('w');

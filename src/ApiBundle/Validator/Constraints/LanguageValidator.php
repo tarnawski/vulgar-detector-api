@@ -17,7 +17,7 @@ class LanguageValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if(isset($value)) {
+        if (isset($value)) {
             $language = $this->wordRepository->findBy(['language' => $value]);
             if (empty($language)) {
                 $this->context->buildViolation($constraint->message)
