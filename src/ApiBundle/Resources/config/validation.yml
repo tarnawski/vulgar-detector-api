@@ -3,7 +3,7 @@ ApiBundle\Model\Query:
         text:
             - NotBlank: ~
             - Length:
-                max:   255
+                max:   512
         language:
             - Length:
                 max:   36

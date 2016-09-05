@@ -26,8 +26,8 @@ class SimilarDetector implements Detector
      */
     public function isVulgar($words, $language = null)
     {
-        $dictionary = $this->wordRepository->getCountWords($language);
-        foreach ($words as $word){
+        $dictionary = $this->wordRepository->getWordsByLanguage($language);
+        foreach ($words as $word) {
             /** @var Word $item */
             foreach ($dictionary as $item) {
                 similar_text($word, $item->getName(), $similarTextPercent);

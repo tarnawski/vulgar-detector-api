@@ -5,6 +5,7 @@ namespace ApiBundle\Controller;
 use ApiBundle\Form\Type\QueryType;
 use ApiBundle\Model\Query;
 use VulgarDetectorBundle\Detector\DetectorFactory;
+use VulgarDetectorBundle\Detector\SimilarDetector;
 use VulgarDetectorBundle\Detector\StaticDetector;
 use VulgarDetectorBundle\Normalizer\LowercaseNormalizer;
 use VulgarDetectorBundle\Repository\WordRepository;
@@ -56,10 +57,10 @@ class VulgarDetectorController extends BaseController
         $lowercaseNormalizer  = $this->get('vulgar_detector.lowercase_normalizer');
         $arrayWords = $lowercaseNormalizer->normalize($arrayWords);
 
-        /** @var DetectorFactory $detectorFactory */
-        $detectorFactory = $this->get('vulgar_detector.detector.similar_detector');
+        /** @var SimilarDetector $similarDetector */
+        $similarDetector= $this->get('vulgar_detector.detector.similar_detector');
 
-        $result = $detectorFactory->isVulgar($arrayWords, $query->language, ['COMPARE', 'SIMILAR']);
+        $result = $similarDetector->isVulgar($arrayWords, $query->language);
 
         return JsonResponse::create([
             'STATUS' => $result ? 'VULGAR' : 'DECENT'
