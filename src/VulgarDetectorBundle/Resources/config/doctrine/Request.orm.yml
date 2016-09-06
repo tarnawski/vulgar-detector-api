@@ -23,9 +23,7 @@ VulgarDetectorBundle\Entity\Request:
             nullable: false
         text:
             column: text
-            type: string
+            type: text
             nullable: true
-            length: 255
-            options:
-              fixed: true
+
     lifecycleCallbacks: {  }

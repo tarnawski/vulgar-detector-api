@@ -3,8 +3,6 @@ imports:
     - { resource: services.yml }
     - { resource: parameters.php }
 
-services:
-
 framework:
     secret: '%secret_key%'
     form: ~

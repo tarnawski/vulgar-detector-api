@@ -16,10 +16,10 @@ class RequestRepository extends EntityRepository
         $result = $this->createQueryBuilder('r')
             ->select('COUNT(r)')
             ->where('r.ip = :ip')
-            ->andWhere('r.date = $date')
+            ->andWhere('r.date = :date')
             ->setParameters([
                 'ip' => $ip,
-                'date' => $date
+                'date' => $date->format('Y-m-d')
             ])
             ->getQuery()
             ->getSingleScalarResult();
@@ -43,8 +43,8 @@ class RequestRepository extends EntityRepository
 
         $result = $this->createQueryBuilder('r')
             ->select('COUNT(r)')
-            ->andWhere('r.date = $date')
-            ->setParameter('date', $date)
+            ->andWhere('r.date = :date')
+            ->setParameter('date', $date->format('Y-m-d'))
             ->getQuery()
             ->getSingleScalarResult();
 

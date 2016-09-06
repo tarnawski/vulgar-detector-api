@@ -5,6 +5,12 @@ services:
     arguments:
       - VulgarDetectorBundle\Entity\Word
 
+  vulgar_detector.request.repository:
+    class: Doctrine\ORM\EntityRepository
+    factory: ['@doctrine.orm.entity_manager', getRepository]
+    arguments:
+      - VulgarDetectorBundle\Entity\Request
+
   vulgar_detector.detector.similar_detector:
     class: VulgarDetectorBundle\Detector\SimilarDetector
     arguments:
@@ -19,6 +25,19 @@ services:
   vulgar_detector.lowercase_normalizer:
     class: VulgarDetectorBundle\Normalizer\LowercaseNormalizer
 
+  vulgar_detector.stop_words_normalizer:
+    class: VulgarDetectorBundle\Normalizer\StopWordsNormalizer
+
+  vulgar_detector.unique_normalizer:
+    class: VulgarDetectorBundle\Normalizer\UniqueNormalizer
+
+  vulgar_detector.normalizer_factory:
+    class: VulgarDetectorBundle\Normalizer\NormalizerFactory
+    arguments:
+      - '@vulgar_detector.lowercase_normalizer'
+      - '@vulgar_detector.stop_words_normalizer'
+      - '@vulgar_detector.unique_normalizer'
+
   vulgar_detector.validator.language:
     class: ApiBundle\Validator\Constraints\LanguageValidator
     arguments:
@@ -27,6 +46,6 @@ services:
       - { name: validator.constraint_validator, alias: language_validate }
 
   vulgar_detector.service.request_service:
-    class: VulgarDetectorBundle\Detector\RequestService
+    class: VulgarDetectorBundle\Service\RequestService
     arguments:
       - '@doctrine.orm.entity_manager'
