@@ -9,6 +9,8 @@ services:
     class: VulgarDetectorBundle\Detector\SimilarDetector
     arguments:
       - '@vulgar_detector.word.repository'
+      - '@memcache.default'
+      - '%memcache_ttl%'
       - '%default_threshold%'
 
   vulgar_detector.word_tokenizer:

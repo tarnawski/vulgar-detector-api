@@ -2,7 +2,7 @@
 
 namespace VulgarDetectorBundle\Detector;
 
-use Lsw\MemcacheBundle\Doctrine\Cache\MemcacheCache;
+use Lsw\MemcacheBundle\Cache\AntiDogPileMemcache;
 use VulgarDetectorBundle\Entity\Word;
 use VulgarDetectorBundle\Repository\WordRepository;
 
@@ -11,7 +11,7 @@ class SimilarDetector implements Detector
     /** @var WordRepository */
     private $wordRepository;
 
-    /** @var  MemcacheCache */
+    /** @var  AntiDogPileMemcache */
     private $cache;
 
     /** @var string */
@@ -22,7 +22,7 @@ class SimilarDetector implements Detector
 
     public function __construct(
         WordRepository $wordRepository,
-        MemcacheCache $memcacheCache,
+        AntiDogPileMemcache $memcacheCache,
         $memcacheTTL,
         $defaultThreshold
     ) {
