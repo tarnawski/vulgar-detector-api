@@ -1,9 +1,13 @@
 VulgarDetectorBundle\Entity\Word:
   word1:
-    value: dupa
-    language: pl
-    type: GRIME
-  word2:
-    value: fuck
+    name: fuck
     language: en
-    type: GRIME
+  word2:
+    name: fucked
+    language: en
+  word3:
+    name: xxx
+    language: en
+  word4:
+    name: sex
+    language: pl

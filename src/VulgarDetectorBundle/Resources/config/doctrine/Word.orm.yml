@@ -12,20 +12,13 @@ VulgarDetectorBundle\Entity\Word:
             generator:
                 strategy: IDENTITY
     fields:
-        value:
-            column: value
+        name:
+            column: name
             type: string
             nullable: false
             length: 255
-            options:
-                fixed: false
         language:
             column: language
-            type: string
-            nullable: false
-            length: 32
-        type:
-            column: type
             type: string
             nullable: false
             length: 32

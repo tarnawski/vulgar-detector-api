@@ -5,25 +5,23 @@ services:
     arguments:
       - VulgarDetectorBundle\Entity\Word
 
-  vulgar_detector.service.statistic_service:
-    class: VulgarDetectorBundle\Service\StatisticService
-    arguments:
-      - '@doctrine.orm.entity_manager'
-
-  vulgar_detector.detector.static_strategy:
-    class: VulgarDetectorBundle\Detector\Strategy\StaticStrategy
+  vulgar_detector.detector.similar_detector:
+    class: VulgarDetectorBundle\Detector\SimilarDetector
     arguments:
       - '@vulgar_detector.word.repository'
-      - '@vulgar_detector.service.statistic_service'
+      - '@memcache.default'
+      - '%memcache_ttl%'
+      - '%default_threshold%'
 
-  vulgar_detector.detector.strategy_factory:
-    class: VulgarDetectorBundle\Detector\StrategyFactory
+  vulgar_detector.word_tokenizer:
+    class: VulgarDetectorBundle\Tokenizer\WordTokenizer
+
+  vulgar_detector.lowercase_normalizer:
+    class: VulgarDetectorBundle\Normalizer\LowercaseNormalizer
+
+  vulgar_detector.validator.language:
+    class: ApiBundle\Validator\Constraints\LanguageValidator
     arguments:
-      - '@vulgar_detector.detector.static_strategy'
-
-  vulgar_detector.corrector.vulgar_corrector:
-    class: VulgarDetectorBundle\Corrector\VulgarCorrector
-    arguments:
-      - '@vulgar_detector.word.repository'
-
-
+          entityManager: "@vulgar_detector.word.repository"
+    tags:
+      - { name: validator.constraint_validator, alias: language_validate }

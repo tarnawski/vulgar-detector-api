@@ -8,13 +8,10 @@ class Word
     private $id;
 
     /** @var string */
-    private $value;
+    private $name;
 
     /** @var string */
     private $language;
-
-    /** @var string */
-    private $type;
 
     /**
      * @return int
@@ -27,17 +24,17 @@ class Word
     /**
      * @return string
      */
-    public function getValue()
+    public function getName()
     {
-        return $this->value;
+        return $this->name;
     }
 
     /**
-     * @param string $value
+     * @param string $name
      */
-    public function setValue($value)
+    public function setName($name)
     {
-        $this->value = $value;
+        $this->name = $name;
     }
 
     /**
@@ -54,21 +51,5 @@ class Word
     public function setLanguage($language)
     {
         $this->language = $language;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
     }
 }

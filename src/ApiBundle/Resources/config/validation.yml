@@ -3,10 +3,8 @@ ApiBundle\Model\Query:
         text:
             - NotBlank: ~
             - Length:
-                max:   255
+                max:   512
         language:
             - Length:
                 max:   36
-        correct:
-            - Type:
-                type: bool
+            - ApiBundle\Validator\Constraints\Language: ~
