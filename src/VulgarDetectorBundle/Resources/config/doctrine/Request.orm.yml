@@ -1,0 +1,31 @@
+VulgarDetectorBundle\Entity\Request:
+    type: entity
+    table: request
+    repositoryClass: VulgarDetectorBundle\Repository\RequestRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        ip:
+            column: name
+            type: string
+            nullable: false
+            length: 128
+        date:
+            column: date
+            type: date
+            nullable: false
+        text:
+            column: text
+            type: string
+            nullable: true
+            length: 255
+            options:
+              fixed: true
+    lifecycleCallbacks: {  }

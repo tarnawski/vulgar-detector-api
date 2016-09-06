@@ -25,3 +25,8 @@ services:
           entityManager: "@vulgar_detector.word.repository"
     tags:
       - { name: validator.constraint_validator, alias: language_validate }
+
+  vulgar_detector.service.request_service:
+    class: VulgarDetectorBundle\Detector\RequestService
+    arguments:
+      - '@doctrine.orm.entity_manager'

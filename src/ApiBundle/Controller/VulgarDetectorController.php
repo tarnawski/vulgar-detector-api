@@ -10,6 +10,7 @@ use VulgarDetectorBundle\Repository\WordRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use VulgarDetectorBundle\Service\RequestService;
 use VulgarDetectorBundle\Tokenizer\WordTokenizer;
 
 class VulgarDetectorController extends BaseController
@@ -36,6 +37,17 @@ class VulgarDetectorController extends BaseController
      */
     public function checkAction(Request $request)
     {
+        /** @var RequestService $requestService */
+        $requestService = $this->get('vulgar_detector.service.request_service');
+        $count = $requestService->getRequestByIp($request->getClientIp());
+        $requestLimit = $this->getParameter('request_limit');
+
+        if ($count > $requestLimit) {
+            return JsonResponse::create([
+                'STATUS' => 'Limit'
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
         $form = $this->createForm(QueryType::class);
         $submittedData = json_decode($request->getContent(), true);
         $form->submit($submittedData);
@@ -46,6 +58,7 @@ class VulgarDetectorController extends BaseController
 
         /** @var Query $query */
         $query = $form->getData();
+        $requestService->logRequest($request->getClientIp(), $query->text);
 
         /** @var WordTokenizer $wordTokenizer */
         $wordTokenizer = $this->get('vulgar_detector.word_tokenizer');
