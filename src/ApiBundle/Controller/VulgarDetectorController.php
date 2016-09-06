@@ -4,9 +4,7 @@ namespace ApiBundle\Controller;
 
 use ApiBundle\Form\Type\QueryType;
 use ApiBundle\Model\Query;
-use VulgarDetectorBundle\Detector\DetectorFactory;
 use VulgarDetectorBundle\Detector\SimilarDetector;
-use VulgarDetectorBundle\Detector\StaticDetector;
 use VulgarDetectorBundle\Normalizer\LowercaseNormalizer;
 use VulgarDetectorBundle\Repository\WordRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;

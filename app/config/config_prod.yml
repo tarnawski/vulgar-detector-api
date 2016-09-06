@@ -1,2 +1,5 @@
 imports:
     - { resource: config.yml }
+
+parameters:
+    memcache_ttl: 3600}
