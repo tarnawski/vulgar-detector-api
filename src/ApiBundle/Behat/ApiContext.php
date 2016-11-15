@@ -2,7 +2,6 @@
 
 namespace ApiBundle\Behat;
 
-
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
@@ -71,5 +70,4 @@ class ApiContext extends WebApiContext implements Context, SnippetAcceptingConte
         $this->getManager()->flush();
         $this->getManager()->clear();
     }
-
 }

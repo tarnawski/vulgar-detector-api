@@ -1,5 +1,6 @@
 /app/config/parameters.yml
 /vendor/
+/app/build
 /bin/*
 !/bin/console
 /vagrant/.vagrant

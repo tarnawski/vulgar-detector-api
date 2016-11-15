@@ -63,7 +63,6 @@ class SimilarDetector implements Detector
         } else {
             $dictionary = $this->wordRepository->getWordsByLanguage($language);
             $this->cache->set($index, $dictionary, false, $this->memcacheTTL);
-
         }
 
         return $dictionary;
