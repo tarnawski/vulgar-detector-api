@@ -1,7 +1,16 @@
 ---
+- name: download mysql5.7 deb package
+  get_url:
+    url: http://dev.mysql.com/get/mysql-apt-config_0.8.1-1_all.deb
+    dest: /tmp/mysql-apt-config.deb
 
-- name: Add repository for MySQL 5.7
-  apt_repository: repo='ppa:ondrej/mysql-5.7'
+- name: Install mysql5.7 deb package
+  apt:
+    deb: /tmp/mysql-apt-config.deb
+
+- name: Updating the cache
+  apt: update_cache=yes
+  sudo: yes
 
 - name: Set MySQL root password before installing
   debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_pass | quote}}' vtype='password'
@@ -10,22 +19,22 @@
   debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_pass | quote}}' vtype='password'
 
 - name: Install Mysql package
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} update_cache=yes force=yes
   with_items:
    - mysql-server
    - python-mysqldb
    - python-selinux
 
 - name: Deletes anonymous MySQL server user for localhost
-  mysql_user: user="" state="absent" login_password="{{ mysql_pass }}" login_user=root
+  mysql_user: user="" state="absent" login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
 
 - name: Secures the MySQL root user
-  mysql_user: user="root" password="{{ mysql_pass }}" host="{{ item }}" login_password="{{mysql_pass}}" login_user=root
+  mysql_user: user="{{ mysql_user }}" password="{{ mysql_pass }}" host="{{ item }}" login_password="{{mysql_pass}}" login_user="{{ mysql_user }}"
   with_items:
     - 127.0.0.1
     - localhost
     - ::1
 
 - name: Removes the MySQL test database
-  mysql_db: db=test state=absent login_password="{{ mysql_pass }}" login_user=root
+  mysql_db: db=test state=absent login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
 
