@@ -24,6 +24,7 @@
 - name: Secures the MySQL root user
   mysql_user: user="{{ mysql_user }}" password="{{ mysql_pass }}" host="{{ item }}" login_password="{{mysql_pass}}" login_user="{{ mysql_user }}"
   with_items:
+    - 10.0.0.200
     - 127.0.0.1
     - localhost
     - ::1
