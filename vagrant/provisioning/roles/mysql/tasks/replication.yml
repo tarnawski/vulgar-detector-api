@@ -1,0 +1,30 @@
+---
+- name: Ensure replication user exists on master.
+  mysql_user:
+    name: "{{ mysql_user }}"
+    host: "%"
+    password: "{{ mysql_pass }}"
+    login_password: "{{mysql_pass}}"
+    login_user: "{{ mysql_user }}"
+    priv: "*.*:REPLICATION SLAVE"
+    state: present
+  when: mysql_replication_role == 'master'
+  notify: restart mysql
+
+- name: Configure replication on the slave.
+  mysql_replication:
+    mode: changemaster
+    login_user: root
+    login_password: rootpassword
+    master_host: "{{ mysql_host }}"
+    master_user: "{{ mysql_user }}"
+    master_password: "{{ mysql_pass }}"
+    master_log_file: "{{ mysql_log_file }}"
+    master_log_pos: "{{ mysql_log_pos }}"
+  when: mysql_replication_role == 'slave'
+  notify: restart mysql
+
+- name: Start replication.
+  mysql_replication: mode=startslave login_user=root login_password=rootpassword
+  when: mysql_replication_role == 'slave'
+  notify: restart mysql

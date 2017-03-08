@@ -9,7 +9,7 @@
       - vars/project.yml
   roles:
     - tools
-    - apache
-    - php7.0
-    - composer
-    - project
+#    - apache
+#    - php7.0
+#    - composer
+#    - project

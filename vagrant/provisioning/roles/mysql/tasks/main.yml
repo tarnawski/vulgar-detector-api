@@ -1,17 +1,4 @@
 ---
-- name: download mysql5.7 deb package
-  get_url:
-    url: http://dev.mysql.com/get/mysql-apt-config_0.8.1-1_all.deb
-    dest: /tmp/mysql-apt-config.deb
-
-- name: Install mysql5.7 deb package
-  apt:
-    deb: /tmp/mysql-apt-config.deb
-
-- name: Updating the cache
-  apt: update_cache=yes
-  sudo: yes
-
 - name: Set MySQL root password before installing
   debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_pass | quote}}' vtype='password'
 
@@ -25,8 +12,14 @@
    - python-mysqldb
    - python-selinux
 
+- name: Add configuration
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0644
+
 - name: Deletes anonymous MySQL server user for localhost
   mysql_user: user="" state="absent" login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
+
+- name: Create a new database
+  mysql_db: db="{{ project_database }}" state=present login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
 
 - name: Secures the MySQL root user
   mysql_user: user="{{ mysql_user }}" password="{{ mysql_pass }}" host="{{ item }}" login_password="{{mysql_pass}}" login_user="{{ mysql_user }}"
@@ -38,3 +31,4 @@
 - name: Removes the MySQL test database
   mysql_db: db=test state=absent login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
 
+- include: replication.yml

@@ -1,6 +1,6 @@
 --- 
 - name: Prepare basic env for php apps on all nodes
-  hosts: vagrant
+  hosts: vagrant-db
   remote_user: vagrant
   connection: local
   become: yes
@@ -8,5 +8,4 @@
   vars_files:
         - vars/mysql.yml
   roles:
-    - tools
     - mysql
