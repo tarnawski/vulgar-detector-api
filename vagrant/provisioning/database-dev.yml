@@ -6,6 +6,7 @@
   become: yes
   become_method: sudo
   vars_files:
+        - vars/project.yml
         - vars/mysql.yml
   roles:
     - mysql

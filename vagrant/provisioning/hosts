@@ -2,6 +2,6 @@
 s01 ansible_ssh_host=10.0.0.200
 
 [vagrant-db]
-db01 server_id=1 ansible_ssh_host=10.0.0.201 mysql_replication_role='master'
-db02 server_id=2 ansible_ssh_host=10.0.0.202 mysql_replication_role='slave'
+db01 ansible_ssh_host=10.0.0.201 server_id=1 mysql_replication_role='master'
+db02 ansible_ssh_host=10.0.0.202 server_id=2 mysql_replication_role='slave'
 
