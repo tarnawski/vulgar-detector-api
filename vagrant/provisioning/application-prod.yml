@@ -1,10 +1,12 @@
 --- 
 - name: Prepare basic env for php apps on all nodes
-  hosts: vagrant
+  hosts: vagrant-http
   remote_user: vagrant
   connection: local
   become: yes
   become_method: sudo
+  vars_files:
+      - vars/project.yml
   roles:
     - tools
     - apache
