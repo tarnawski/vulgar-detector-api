@@ -25,6 +25,9 @@
   notify: restart mysql
 
 - name: Start replication.
-  mysql_replication: mode=startslave login_user=root login_password=rootpassword
+  mysql_replication:
+    mode: startslave
+    login_user: "{{ mysql_user }}"
+    login_password: "{{mysql_pass}}"
   when: mysql_replication_role == 'slave'
   notify: restart mysql
