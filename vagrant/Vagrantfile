@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
     v.ssh.forward_agent = true
     v.vm.provider :virtualbox do |p|
       p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      p.customize ["modifyvm", :id, "--memory", 1024]
+      p.customize ["modifyvm", :id, "--memory", 2048]
       p.customize ["modifyvm", :id, "--name", "vd-s01"]
       p.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
       p.cpus = 1
@@ -43,7 +43,7 @@ Vagrant.configure(2) do |config|
     v.ssh.forward_agent = true
     v.vm.provider :virtualbox do |p|
       p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      p.customize ["modifyvm", :id, "--memory", 512]
+      p.customize ["modifyvm", :id, "--memory", 1024]
       p.customize ["modifyvm", :id, "--name", "vd-db01"]
       p.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
       p.cpus = 2
@@ -75,7 +75,7 @@ Vagrant.configure(2) do |config|
     v.ssh.forward_agent = true
     v.vm.provider :virtualbox do |p|
       p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      p.customize ["modifyvm", :id, "--memory", 512]
+      p.customize ["modifyvm", :id, "--memory", 1024]
       p.customize ["modifyvm", :id, "--name", "vd-db02"]
       p.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
       p.cpus = 2
