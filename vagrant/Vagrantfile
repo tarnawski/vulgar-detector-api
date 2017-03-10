@@ -1,22 +1,24 @@
-require "yaml"
-app_config = YAML::load_file("./.project_name.yml")['parameters'];
+Vagrant.configure(2) do |config|
+  config.vm.define "s01" do |v|
+    v.vm.hostname = "s01"
+    v.vm.box = "ubuntu/trusty64"
+    v.vm.box_check_update = true
 
-Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.network :private_network, ip: "10.0.0.200"
-  config.ssh.forward_agent = true
+    v.vm.network "private_network", ip: "10.0.0.200"
 
-  config.vm.provider :virtualbox do |v|
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--memory", 2048]
-    v.customize ["modifyvm", :id, "--name", app_config["project_name"]]
-    v.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
-    v.cpus = 2
-  end
+    v.ssh.forward_agent = true
+    v.vm.provider :virtualbox do |p|
+      p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      p.customize ["modifyvm", :id, "--memory", 1024]
+      p.customize ["modifyvm", :id, "--name", "vd-s01"]
+      p.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
+      p.cpus = 1
+    end
 
-  config.vm.synced_folder "./../", "/var/www/" + app_config["project_name"],
-    id: "vagrant-root", type: "nfs", nfs_export: true
-  config.vm.provision "shell",
+    v.vm.synced_folder "./../", "/var/www/vulgar-detector",
+          id: "vagrant-root", type: "nfs", nfs_export: true
+
+    v.vm.provision "shell",
       inline: "
         sudo apt-get --yes install software-properties-common;
         sudo apt-get --yes install python-pip;
@@ -24,10 +26,74 @@ Vagrant.configure("2") do |config|
         sudo apt-get --yes update ;
         sudo apt-get --yes install ansible"
 
-  config.vm.provision "shell",
-    inline: "cp -R /var/www/" + app_config["project_name"] + "/vagrant ~/;
-             chmod -x ~/vagrant/provisioning/hosts;
-             cd ~/vagrant/provisioning;
-             ansible-playbook -i hosts vagrant.yml;"
+    v.vm.provision "shell",
+      inline: "cp -R /var/www/vulgar-detector/vagrant ~/;
+        chmod -x ~/vagrant/provisioning/hosts;
+        cd ~/vagrant/provisioning;
+        ansible-playbook -i hosts application-dev.yml;"
+  end
 
+  config.vm.define "db01", primary: true do |v|
+    v.vm.hostname = "db01"
+    v.vm.box = "ubuntu/trusty64"
+    v.vm.box_check_update = true
+
+    v.vm.network "private_network", ip: "10.0.0.201"
+
+    v.ssh.forward_agent = true
+    v.vm.provider :virtualbox do |p|
+      p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      p.customize ["modifyvm", :id, "--memory", 512]
+      p.customize ["modifyvm", :id, "--name", "vd-db01"]
+      p.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
+      p.cpus = 2
+    end
+
+    v.vm.provision "shell",
+          inline: "
+            sudo apt-get --yes install software-properties-common;
+            sudo apt-get --yes install python-pip;
+            sudo apt-add-repository --yes ppa:ansible/ansible;
+            sudo apt-get --yes update ;
+            sudo apt-get --yes install ansible"
+
+    v.vm.provision "shell",
+          inline: "rm -rf ~/vagrant;
+            cp -R /vagrant ~/;
+            chmod -x ~/vagrant/provisioning/hosts;
+            cd ~/vagrant/provisioning;
+            ansible-playbook -i hosts database-dev.yml --limit db01;"
+  end
+
+  config.vm.define "db02" do |v|
+    v.vm.hostname = "db02"
+    v.vm.box = "ubuntu/trusty64"
+    v.vm.box_check_update = true
+
+    v.vm.network "private_network", ip: "10.0.0.202"
+
+    v.ssh.forward_agent = true
+    v.vm.provider :virtualbox do |p|
+      p.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      p.customize ["modifyvm", :id, "--memory", 512]
+      p.customize ["modifyvm", :id, "--name", "vd-db02"]
+      p.customize ["modifyvm", :id, "--cpuexecutioncap", "80"]
+      p.cpus = 2
+    end
+
+  v.vm.provision "shell",
+        inline: "
+          sudo apt-get --yes install software-properties-common;
+          sudo apt-get --yes install python-pip;
+          sudo apt-add-repository --yes ppa:ansible/ansible;
+          sudo apt-get --yes update ;
+          sudo apt-get --yes install ansible"
+
+  v.vm.provision "shell",
+        inline: "rm -rf ~/vagrant;
+          cp -R /vagrant ~/;
+          chmod -x ~/vagrant/provisioning/hosts;
+          cd ~/vagrant/provisioning;
+          ansible-playbook -i hosts database-dev.yml --limit db02;"
+  end
 end

@@ -6,5 +6,5 @@ parameters:
 
 doctrine:
     dbal:
-        dbname:   "%database_name%-dev"
+        dbname:   "%database_name%"
 
