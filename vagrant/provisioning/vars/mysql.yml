@@ -1,0 +1,7 @@
+---
+mysql_host: 10.0.0.201
+mysql_port: 3306
+mysql_user: root
+mysql_pass: rootpassword
+mysql_log_file: mysql-bin.000001
+mysql_log_pos: 107

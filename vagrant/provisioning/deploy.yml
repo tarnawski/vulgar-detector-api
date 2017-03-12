@@ -1,6 +1,6 @@
 ---
 - name: Deploy last wishes app to my server
-  hosts: staging
+  hosts: staging-http
   become: yes
   become_method: sudo
   vars:
