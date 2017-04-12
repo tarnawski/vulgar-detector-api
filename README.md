@@ -15,7 +15,7 @@ In order to set application up you must follow by steps:
 
 ### How to provision new server
 ```bash
-ansible-playbook -i hosts provision.yml -u {USERNAME} -k -K
+ansible-playbook -i hosts application-prod.yml -u {USERNAME} -k -K
 ```
 
 ### Create archive with project 

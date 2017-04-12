@@ -1,5 +1,13 @@
-[develop]
-vagrant ansible_ssh_host=10.0.0.200
+[vagrant-http]
+s01 ansible_ssh_host=10.0.0.200
 
-[staging]
-staging   ansible_ssh_host=10.0.0.201
+[vagrant-db]
+db01 ansible_ssh_host=10.0.0.201 server_id=1 mysql_replication_role='master'
+db02 ansible_ssh_host=10.0.0.202 server_id=2 mysql_replication_role='slave'
+
+[staging-http]
+s01 ansible_ssh_host=10.0.0.205
+
+[staging-db]
+db01 ansible_ssh_host=10.0.0.206 server_id=1 mysql_replication_role='master'
+db02 ansible_ssh_host=10.0.0.207 server_id=2 mysql_replication_role='slave'

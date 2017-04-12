@@ -1,10 +1,11 @@
 parameters:
-    secret_key:         SecretToken
-    database_driver:    pdo_mysql
-    database_host:      127.0.0.1
-    database_port:      ~
-    database_name:      vulgar-detector
-    database_user:      root
-    database_password:  root
-    default_threshold:  85
-    request_limit:      500
+    secret_key:             SecretToken
+    database_driver:        pdo_mysql
+    database_host_write:    10.0.0.201
+    database_host_read:     10.0.0.202
+    database_port:          ~
+    database_name:          vulgar-detector
+    database_user:          api
+    database_password:      simple
+    default_threshold:      85
+    request_limit:          500

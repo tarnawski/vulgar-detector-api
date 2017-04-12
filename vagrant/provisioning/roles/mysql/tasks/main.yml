@@ -1,8 +1,4 @@
 ---
-
-- name: Add repository for MySQL 5.7
-  apt_repository: repo='ppa:ondrej/mysql-5.7'
-
 - name: Set MySQL root password before installing
   debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_pass | quote}}' vtype='password'
 
@@ -10,22 +6,39 @@
   debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_pass | quote}}' vtype='password'
 
 - name: Install Mysql package
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} update_cache=yes force=yes
   with_items:
    - mysql-server
    - python-mysqldb
    - python-selinux
 
+- name: Add configuration
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=root group=root mode=0644
+
 - name: Deletes anonymous MySQL server user for localhost
-  mysql_user: user="" state="absent" login_password="{{ mysql_pass }}" login_user=root
+  mysql_user: user="" state="absent" login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
+
+- name: Create a new database
+  mysql_db: db="{{ project_database }}" state=present login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
 
 - name: Secures the MySQL root user
-  mysql_user: user="root" password="{{ mysql_pass }}" host="{{ item }}" login_password="{{mysql_pass}}" login_user=root
+  mysql_user: user="{{ mysql_user }}" password="{{ mysql_pass }}" host="{{ item }}" login_password="{{mysql_pass}}" login_user="{{ mysql_user }}"
   with_items:
     - 127.0.0.1
     - localhost
     - ::1
 
-- name: Removes the MySQL test database
-  mysql_db: db=test state=absent login_password="{{ mysql_pass }}" login_user=root
+- name: Create application user
+  mysql_user:
+    login_password: "{{mysql_pass}}"
+    login_user: "{{ mysql_user }}"
+    name: "{{ project_database_user }}"
+    password: "{{ project_database_pass }}"
+    host: "10.0.0.200"
+    priv: '*.*:ALL'
+    state: present
 
+- name: Removes the MySQL test database
+  mysql_db: db=test state=absent login_password="{{ mysql_pass }}" login_user="{{ mysql_user }}"
+
+- include: replication.yml
