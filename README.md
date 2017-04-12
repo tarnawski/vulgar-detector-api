@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/tarnawski/vulgar-detector-api.svg?branch=develop)](https://travis-ci.org/tarnawski/vulgar-detector-api)
 
+
 VULGAR DETECTOR
 ===============
 Tool to detect vulgar language in text
