@@ -29,3 +29,5 @@ composer archive --format=tar --file=vulgar-detector --dir=vagrant/provisioning/
 sudo ansible-galaxy install --force carlosbuenosvinos.ansistrano-deploy
 ansible-playbook -i hosts deploy.yml -u {USERNAME} -k -K
 ```
+
+
